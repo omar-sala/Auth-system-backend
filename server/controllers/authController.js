@@ -59,10 +59,6 @@ export const login = async (req, res) => {
       },
     })
 
-    // console.log('LOGIN EMAIL:', email)
-    // console.log('USER FOUND:', !!user)
-    // console.log('PASSWORD RECEIVED:', !!password)
-
     if (!user) {
       return res.status(401).json({
         message: 'Invalid email or password',
@@ -92,12 +88,10 @@ export const login = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
+      secure: true,
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
-
-    // console.log('TOKEN COOKIE SET')
 
     return res.json({
       message: 'Login successful',
