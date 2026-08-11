@@ -59,6 +59,10 @@ export const login = async (req, res) => {
       },
     })
 
+    // console.log('LOGIN EMAIL:', email)
+    // console.log('USER FOUND:', !!user)
+    // console.log('PASSWORD RECEIVED:', !!password)
+
     if (!user) {
       return res.status(401).json({
         message: 'Invalid email or password',
@@ -66,6 +70,8 @@ export const login = async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
+
+    console.log('PASSWORD MATCH:', isMatch)
 
     if (!isMatch) {
       return res.status(401).json({
@@ -90,6 +96,8 @@ export const login = async (req, res) => {
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
+
+    // console.log('TOKEN COOKIE SET')
 
     return res.json({
       message: 'Login successful',
@@ -212,4 +220,36 @@ export const logout = (req, res) => {
   return res.json({
     message: 'Logout successful',
   })
+}
+
+export const getMe = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        googleId: true,
+      },
+    })
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      })
+    }
+
+    return res.json({
+      user,
+    })
+  } catch (error) {
+    console.error(error)
+
+    return res.status(500).json({
+      message: 'Something went wrong',
+    })
+  }
 }

@@ -7,10 +7,12 @@ import {
   forgotPassword,
   resetPassword,
   logout,
+  getMe,
 } from '../controllers/authController.js'
 import { registerSchema, loginSchema } from '../utils/validation/authSchemas.js'
 import { validate } from '../middleware/validate.js'
 import rateLimit from 'express-rate-limit'
+import { authMiddleware } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -27,6 +29,7 @@ router.post('/login', loginLimiter, validate(loginSchema), login)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password', resetPassword)
 router.post('/logout', logout)
+router.get('/me', authMiddleware, getMe)
 
 router.get(
   '/google',
@@ -59,9 +62,7 @@ router.get(
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
-    return res.json({
-      message: 'Google login successful',
-    })
+    return res.redirect('http://localhost:5173/profile')
   }
 )
 

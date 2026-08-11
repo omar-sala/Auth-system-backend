@@ -8,13 +8,12 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String?
-  googleId  String?  @unique
-  createdAt DateTime @default(now())
-
+  id          Int                  @id @default(autoincrement())
+  name        String
+  email       String               @unique
+  password    String?
+  googleId    String?              @unique
+  createdAt   DateTime             @default(now())
   resetTokens PasswordResetToken[]
 }
 
@@ -24,6 +23,5 @@ model PasswordResetToken {
   userId    Int
   expiresAt DateTime
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
