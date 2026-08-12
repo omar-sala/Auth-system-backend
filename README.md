@@ -4,6 +4,8 @@ A production-oriented full-stack authentication system built with **React, TypeS
 
 🔗 **Live Frontend:** https://auth-system-backend-89re.vercel.app
 
+🔗 **Live Frontend:** https://auth-system-backend-phi.vercel.app
+
 The project was built from scratch to understand how a complete authentication system works in both development and production environments.
 
 ---
